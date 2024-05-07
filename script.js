@@ -16,6 +16,7 @@ function scheduleMusic() {
   var hoursAndMinutes = timeInput.split(":");
   scheduledTime.setHours(parseInt(hoursAndMinutes[0]));
   scheduledTime.setMinutes(parseInt(hoursAndMinutes[1]));
+  scheduledTime.setSeconds(1); // 秒数を1に設定
 
   // 現在時刻を取得
   var currentTime = new Date();
@@ -36,6 +37,9 @@ function scheduleMusic() {
   listItem.appendChild(cancelBtn);
   scheduledMusicList.appendChild(listItem);
 
+  // 次の再生時刻までの時間を計算
+  var timeUntilPlay = scheduledTime - currentTime;
+
   // スケジュールされた音楽を保持
   var scheduledMusic = setTimeout(function() {
     playMusic(musicFile);
@@ -47,7 +51,7 @@ function scheduleMusic() {
       scheduledMusics.splice(index, 1);
       scheduledMusicList.removeChild(listItem);
     }
-  }, scheduledTime - currentTime);
+  }, timeUntilPlay);
   scheduledMusics.push({time: scheduledTime, timeoutID: scheduledMusic});
 }
 
